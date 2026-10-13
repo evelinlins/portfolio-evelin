@@ -18,7 +18,8 @@ with open(os.path.join(base_dir, 'css/style.css'), 'r', encoding='utf-8') as f:
 with open(os.path.join(base_dir, 'js/main.js'), 'r', encoding='utf-8') as f:
     js_content = f.read()
 
-with open(os.path.join(base_dir, 'index.html'), 'r', encoding='utf-8') as f:
+# Source of truth is index.modular.html
+with open(os.path.join(base_dir, 'index.modular.html'), 'r', encoding='utf-8') as f:
     html = f.read()
 
 bundled_html = html
@@ -28,8 +29,12 @@ bundled_html = bundled_html.replace('assets/img/evelin_hero.jpg', f'data:image/j
 bundled_html = bundled_html.replace('assets/img/evelin_about.jpg', f'data:image/jpeg;base64,{about_b64}')
 bundled_html = bundled_html.replace('assets/img/aerometrics_preview.png', f'data:image/png;base64,{preview_b64}')
 
-# Save to index.bundle.html as standalone portable distribution
+# Save to index.html (primary for Vercel/GitHub upload)
+with open(os.path.join(base_dir, 'index.html'), 'w', encoding='utf-8') as f:
+    f.write(bundled_html)
+
+# Save to index.bundle.html (backup copy)
 with open(os.path.join(base_dir, 'index.bundle.html'), 'w', encoding='utf-8') as f:
     f.write(bundled_html)
 
-print("BUNDLE_READY: index.bundle.html created successfully.")
+print("BUNDLE_READY: index.html and index.bundle.html generated successfully.")
